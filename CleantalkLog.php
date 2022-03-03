@@ -140,15 +140,20 @@ class CleantalkLog
 			return;
 		}
 
-		$query = 'INSERT INTO ' . $this->db_handler->prefix . self::$table_name . ' 
+        $values = array();
+        $query = 'INSERT INTO ' . $this->db_handler->prefix . self::$table_name . ' 
 			(record_info, additional_info) 
 			VALUES ';
-		foreach ( self::$records as $record ) {
-			$query .= '(\'' . json_encode( $record['info'], JSON_FORCE_OBJECT ) . '\', \'' . json_encode( $record['additional_info'], JSON_FORCE_OBJECT ) . '\'),';
-		}
-		$query = substr( $query,0,-1 );
+        foreach ( self::$records as $record ) {
+            $query .= '(%s, %s),';
+            $values[] = json_encode( $record['info'], JSON_FORCE_OBJECT );
+            $values[] = json_encode( $record['additional_info'], JSON_FORCE_OBJECT );
+        }
+        $query = substr( $query,0,-1 );
 
-		$this->db_handler->query( $query );
+        $prepared_query = $this->db_handler->prepare( $query, $values );
+
+        $this->db_handler->query( $prepared_query );
 	}
 
 	/**
