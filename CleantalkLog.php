@@ -125,6 +125,16 @@ class CleantalkLog
 	 */
 	public function add_record ( $path, $additional_info = null )
 	{
+        /**
+         * Removed login data from POST
+         */
+        if (isset($additional_info['POST']['log'])) {
+            unset($additional_info['POST']['log']);
+        }
+        if (isset($additional_info['POST']['pwd'])) {
+            unset($additional_info['POST']['pwd']);
+        }
+
 		self::$records[] = array(
 			'info'            => 'Request was skipped in ' . $path,
 			'additional_info' => $additional_info
