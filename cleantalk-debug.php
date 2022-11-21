@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Cleantalk Debug
  * Author:            CleanTalk team
- * Version:           2.0
+ * Version:           2.1
  */
 
 // If this file is called directly, abort.
